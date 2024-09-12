@@ -40,7 +40,6 @@ public class AppConfig {
                         "http://localhost:8081/",
                         "http://localhost:3000/",
                         "https://dhr-social.vercel.app/"
-
                 ));
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);
