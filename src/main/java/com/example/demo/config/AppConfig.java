@@ -48,7 +48,7 @@ public class AppConfig {
                 cfg.setExposedHeaders(Arrays.asList(
                         "http://localhost:8081/",
                         "http://localhost:3000/",
-                        "https://dhr-social.vercel.app/"
+                        "https://dhr-social.vercel.app"
                 ));
                 cfg.setMaxAge(36000l);
                 return cfg;
