@@ -36,19 +36,21 @@ public class AppConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg=new CorsConfiguration();
-                cfg.setAllowedOrigins(Arrays.asList(
-                        "http://localhost:8081/",
-                        "http://localhost:3000/",
-                        "https://dhr-social.vercel.app/"
-                ));
+                cfg.setAllowedOrigins(Collections.singletonList("*")
+//                        Arrays.asList(
+//                        "http://localhost:8081/",
+//                        "http://localhost:3000/",
+//                        "https://dhr-social.vercel.app/"
+                );
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
-                cfg.setExposedHeaders(Arrays.asList(
-                        "http://localhost:8081/",
-                        "http://localhost:3000/",
-                        "https://dhr-social.vercel.app/"
-                ));
+                cfg.setExposedHeaders(Collections.singletonList("*")
+//                        Arrays.asList(
+//                        "http://localhost:8081/",
+//                        "http://localhost:3000/",
+//                        "https://dhr-social.vercel.app/"
+                );
                 cfg.setMaxAge(36000l);
                 return cfg;
             }
