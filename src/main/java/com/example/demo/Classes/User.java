@@ -27,6 +27,7 @@ public class User {
     private String bio;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<User> followers=new ArrayList<>();
     @ManyToMany(cascade = CascadeType.ALL)
     @JsonIgnore

@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 public class Chat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chatId;
     @ManyToOne
     private User admin;

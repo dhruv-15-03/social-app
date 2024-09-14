@@ -38,7 +38,6 @@ public class ChatController {
     @GetMapping("/findAll")
     public List<Chat> find(@RequestHeader ("Authorization") String jwt)throws ChatException{
         User user=userImplementation.getFromJwt(jwt);
-
         return chatMethod.findByUser(user,userAll.getReferenceById(user.getId()));
     }
     @DeleteMapping("/deleteForAll/{userId}")

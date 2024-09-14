@@ -44,9 +44,14 @@ public class UserController {
         return userImplementation.Update(main,user);
     }
     @GetMapping("/getFollowing/{userId}")
-    public List<User> getF(@RequestHeader ("Authorization") String jwt,@PathVariable Integer userId){
+    public List<User> getF(@PathVariable Integer userId){
         User user=userImplementation.getFromId(userId);
         return user.getFollowing();
+    }
+    @GetMapping("/getFollowers/{userId}")
+    public List<User> getFwrs(@PathVariable Integer userId){
+        User user=userImplementation.getFromId(userId);
+        return user.getFollowers();
     }
     @GetMapping("/delete/{userId}")
     public String delete(@RequestHeader ("Authorization") String jwt,@PathVariable Integer userId) throws UserException {
