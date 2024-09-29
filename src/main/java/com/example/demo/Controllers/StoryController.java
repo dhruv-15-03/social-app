@@ -10,6 +10,8 @@ import com.example.demo.Implementation.UserImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/story")
 public class StoryController {
@@ -21,7 +23,7 @@ public class StoryController {
     private UserImplementation userImplementation;
     @Autowired
     private StoryImplementation storyImplementation;
-    @PostMapping("/story")
+    @PostMapping("/new")
     public Story post(@RequestBody Story story, @RequestHeader ("Authorization") String jwt){
         User user=userImplementation.getFromJwt(jwt);
         return storyImplementation.post(story,user);
@@ -40,5 +42,25 @@ public class StoryController {
     public Story view(@PathVariable Integer storyId,@RequestHeader ("Authorization") String jwt) throws Exception {
         User user=userImplementation.getFromJwt(jwt);
         return storyImplementation.view(storyId,user);
+    }
+    @GetMapping("/self")
+    public List<Story> self(@RequestHeader ("Authorization") String jwt){
+        User user=userImplementation.getFromJwt(jwt);
+        return storyImplementation.getSelf(user);
+    }
+    @GetMapping("/users")
+    public List<User> users(@RequestHeader ("Authorization") String jwt){
+        User user=userImplementation.getFromJwt(jwt);
+        return storyImplementation.users(user);
+    }
+    @GetMapping("/getUser/{userId}")
+    public List<Story> userStory(@PathVariable Integer userId){
+        User user =userImplementation.getFromId(userId);
+        return storyImplementation.getSelf(user);
+    }
+    @GetMapping("/getUsers")
+    public List<Story> getUsers(@RequestHeader ("Authorization") String jwt){
+        User user=userImplementation.getFromJwt(jwt);
+        return storyImplementation.getUsers(user);
     }
 }

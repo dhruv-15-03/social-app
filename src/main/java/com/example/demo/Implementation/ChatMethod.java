@@ -39,6 +39,14 @@ public class ChatMethod implements ChatMethods{
         Chat chat=new Chat();
         chat.setTime(LocalDateTime.now());
         List<Chat> temp1=user1.getChat();
+        for(Chat chat1:temp1){
+            if(chat1.getAdmin().equals(user2))
+                return chat;
+            for(User user3: chat.getChats()){
+                if(user3.equals(user2))
+                    return chat;
+            }
+        }
         temp1.add(chat);
         user1.setChat(temp1);
         List<Chat> temp2=user2.getChat();

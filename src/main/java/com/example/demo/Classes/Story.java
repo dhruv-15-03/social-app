@@ -17,6 +17,8 @@ public class Story {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String content;
+    private String image;
+    private String video;
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonIgnore
     private User main;
@@ -31,12 +33,14 @@ public class Story {
     public Story() {
     }
 
-    public Story(Integer id, String content, User main, List<User> liked,LocalDateTime time,List<User> views) {
+    public Story(Integer id, String content,String image,String video, User main, List<User> liked,LocalDateTime time,List<User> views) {
         this.id = id;
         this.content = content;
         this.main = main;
         this.liked = liked;
         this.time=time;
         this.views=views;
+        this.image=image;
+        this.video=video;
     }
 }

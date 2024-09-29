@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class StoryImplementation implements StoryMethods{
@@ -22,6 +26,7 @@ public class StoryImplementation implements StoryMethods{
     @Override
     public Story post(Story story, User user) {
         story.setTime(LocalDateTime.now());
+        scheduleExpiration(story);
         story.setMain(user);
         List<Story> temp=user.getStory();
         temp.add(story);
@@ -30,7 +35,19 @@ public class StoryImplementation implements StoryMethods{
         storyAll.save(story);
         return story;
     }
-
+    private void scheduleExpiration(Story story) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.schedule(() -> {
+            try {
+                expire(story);
+            } catch (StoryException e) {
+                throw new RuntimeException(e);
+            }
+        }, 24, TimeUnit.HOURS);
+    }
+    private void expire(Story story) throws StoryException {
+        Delete(story.getId(),story.getMain());
+    }
     @Override
     public Story like(Integer storyId, User user) throws StoryException {
         Story story=storyAll.getReferenceById(storyId);
@@ -74,5 +91,34 @@ public class StoryImplementation implements StoryMethods{
         story.setViews(view);
         storyAll.save(story);
         return story;
+    }
+
+    @Override
+    public List<Story> getAll() {
+        return storyAll.findAll();
+    }
+
+    @Override
+    public List<Story> getUsers(User user) {
+        List<User> following=user.getFollowing();
+        List<Story> stories=new ArrayList<>();
+        for(User user1 : following){
+            if(user1.getStory()!=null){
+                stories.addAll(user1.getStory());
+            }
+        }
+        return stories;
+    }
+
+    @Override
+    public List<Story> getSelf(User user) {
+        return user.getStory();
+    }
+
+    @Override
+    public List<User> users(User user) {
+        List<User> users=user.getFollowing();
+        users.removeIf(user1 -> user1.getStory() == null);
+        return users;
     }
 }
