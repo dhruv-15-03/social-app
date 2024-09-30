@@ -118,7 +118,7 @@ public class StoryImplementation implements StoryMethods{
     @Override
     public List<User> users(User user) {
         List<User> users=user.getFollowing();
-        users.removeIf(user1 -> user1.getStory() == null);
+        users.removeIf(user1 -> user1.getStory().isEmpty());
         return users;
     }
 }
