@@ -23,30 +23,37 @@ public class StoryImplementation implements StoryMethods{
     @Autowired
     private UserAll userAll;
 
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
     @Override
     public Story post(Story story, User user) {
         story.setTime(LocalDateTime.now());
         scheduleExpiration(story);
         story.setMain(user);
-        List<Story> temp=user.getStory();
+
+        List<Story> temp = user.getStory();
         temp.add(story);
         user.setStory(temp);
+
         userAll.save(user);
         storyAll.save(story);
+
         return story;
     }
+
     private void scheduleExpiration(Story story) {
-        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.schedule(() -> {
             try {
                 expire(story);
             } catch (StoryException e) {
-                throw new RuntimeException(e);
+                // Handle exception (log the error)
+                System.err.println("Error expiring story: " + e.getMessage());
             }
         }, 24, TimeUnit.HOURS);
     }
+
     private void expire(Story story) throws StoryException {
-        Delete(story.getId(),story.getMain());
+        Delete(story.getId(), story.getMain());
     }
     @Override
     public Story like(Integer storyId, User user) throws StoryException {
